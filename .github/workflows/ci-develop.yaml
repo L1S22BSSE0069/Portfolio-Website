@@ -1,0 +1,31 @@
+name: CI Lint Check
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Install HTMLHint and Stylelint
+        run: |
+          npm init -y
+          npm install htmlhint stylelint stylelint-config-standard --save-dev
+
+      - name: Lint HTML files
+        run: npx htmlhint "src/**/*.html"
+
+
+      - name: Lint CSS files
+        run: npx stylelint "styles/**/*.css" --config .stylelintrc.json
